@@ -1,0 +1,18 @@
+body{font-family:Arial,sans-serif;margin:1rem;background:#111;color:#eee}
+h1{margin-top:0}
+section{border:1px solid #333;padding:0.75rem;margin-bottom:1rem;border-radius:4px;background:#1b1b1b}
+button{cursor:pointer}
+pre.log{max-height:200px;overflow:auto;background:#000;padding:0.5rem}
+table{border-collapse:collapse;width:100%;margin-top:0.5rem;font-size:0.85rem}
+th,td{border:1px solid #333;padding:0.25rem 0.4rem;text-align:left}
+th{background:#222}
+tr:nth-child(even){background:#181818}
+.success{color:#6f6}
+.fail{color:#f66}
+#statusJson{background:#000;padding:0.5rem;max-height:140px;overflow:auto}
+.metrics ul{list-style:none;padding-left:0;margin:0;font-size:0.85rem;display:flex;flex-wrap:wrap;gap:1rem}
+.metrics li span{font-weight:bold}
+.version pre{background:#000;padding:0.5rem;max-height:120px;overflow:auto}
+.cam-controls{display:flex;gap:1rem;align-items:center;margin-bottom:0.5rem}
+#camera form label{display:inline-block;margin-right:1rem;margin-top:0.25rem}
+#camera form input,#camera form select{margin-left:0.25rem}

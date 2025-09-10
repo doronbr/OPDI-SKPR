@@ -1,0 +1,75 @@
+menu "OPDI Networking (ESP-Hosted)"
+
+config OPDI_HOSTED_BUS
+    string "ESP-Hosted transport"
+    default "spi"
+
+config OPDI_COUNTRY_CODE
+    string "Wi-Fi country code"
+    default "IL"
+
+config OPDI_NET_MAX_PROFILES
+    int "Max saved SSIDs"
+    default 20
+    range 1 20
+
+config OPDI_NET_STA_TIMEOUT_S
+    int "Per-SSID connect timeout (s)"
+    default 60
+    range 10 300
+
+config OPDI_NET_RETRIES
+    int "Total STA retries before AP"
+    default 20
+    range 1 100
+
+config OPDI_NET_RETRY_PERIOD_S
+    int "STA re-attempt in AP (s)"
+    default 120
+    range 30 600
+
+config OPDI_NET_SCAN_MIN_RSSI
+    int "Ignore APs weaker than (dBm)"
+    default -90
+    range -100 -30
+
+config OPDI_AP_CHANNEL
+    int "AP channel"
+    default 1
+    range 1 13
+
+config OPDI_AP_OPEN
+    bool "Provisioning AP is open"
+    default y
+
+config OPDI_DHCP_HOSTNAME
+    string "DHCP hostname"
+    default "opdi-skpr"
+
+config OPDI_NET_TESTING
+    bool "Enable opdi_net test stubs (no real Wi-Fi ops)"
+    help
+        When enabled, the network manager skips actual esp_wifi configuration and
+        connection attempts, allowing host-side or logic-only unit tests to drive
+        state transitions deterministically.
+    default n
+
+endmenu
+
+menu "OPDI Networking Bootstrap"
+
+config OPDI_NET_BOOTSTRAP_SSID
+    string "Bootstrap Wi-Fi SSID"
+    help
+        Optional SSID the device will attempt to join on first boot when no
+        profiles are stored yet. If connection succeeds, credentials are NOT
+        persisted automatically (Phase1) unless later added via API.
+    default ""
+
+config OPDI_NET_BOOTSTRAP_PSK
+    string "Bootstrap Wi-Fi PSK"
+    help
+        Pre-shared key for the bootstrap SSID. Leave empty for open networks.
+    default ""
+
+endmenu

@@ -1,0 +1,3 @@
+﻿dependencies:
+  espressif/esp-idf: "==5.5"
+  espressif/esp_http_server: "^1.3.1"

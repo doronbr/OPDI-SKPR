@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>OPDI_SKPR</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <h1>OPDI_SKPR</h1>
+  <div id="status-badges"></div>
+</header>
+<nav class="sidebar" aria-label="Main navigation">
+  <ul>
+    <li><a href="#status" data-view="status" class="active">Status</a></li>
+    <li><a href="#wifi" data-view="wifi">Wi‑Fi</a></li>
+    <li><a href="#ap" data-view="ap">AP Config</a></li>
+  <li><a href="#logs" data-view="logs">Logs</a></li>
+    <li><a href="#about" data-view="about">About</a></li>
+  </ul>
+</nav>
+<main id="app" tabindex="-1" aria-live="polite">
+  <section id="view-status" class="view active">
+    <h2>Network Status</h2>
+    <div id="status-info">Loading...</div>
+  </section>
+  <section id="view-wifi" class="view">
+    <h2>Wi‑Fi Profiles</h2>
+    <div class="panel">
+      <form id="add-profile-form">
+        <label>SSID <input name="ssid" required maxlength="32" /></label>
+        <label>PSK <input name="psk" maxlength="64" /></label>
+        <label><input type="checkbox" name="hidden" /> Hidden</label>
+        <button type="submit">Add / Update</button>
+      </form>
+    </div>
+    <div class="panel">
+      <button id="btn-scan">Scan Networks</button>
+      <div id="scan-results"></div>
+    </div>
+    <div class="panel">
+      <h3>Saved Profiles</h3>
+      <table id="profiles-table"><thead><tr><th>ID</th><th>Len</th><th>Hidden</th><th>Success</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+  </section>
+  <section id="view-ap" class="view">
+    <h2>Fallback AP</h2>
+    <form id="ap-config-form">
+      <label>SSID <input name="ssid" maxlength="32" /></label>
+      <label>Channel <input name="channel" type="number" min="1" max="13" /></label>
+      <button type="submit">Save AP Config</button>
+    </form>
+  </section>
+  <section id="view-logs" class="view">
+    <h2>Network Logs</h2>
+    <button id="btn-logs-refresh" type="button">Refresh Logs</button>
+    <pre id="logs-view">(no data)</pre>
+  </section>
+  <section id="view-about" class="view">
+    <h2>About</h2>
+    <pre id="sysinfo"></pre>
+  </section>
+</main>
+<div id="toasts" aria-live="assertive" class="toasts"></div>
+<script src="/app.js" defer></script>
+</body>
+</html>

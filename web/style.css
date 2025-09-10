@@ -1,0 +1,25 @@
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;display:flex;min-height:100vh;color:#222;background:#f5f7fa}
+.topbar{position:fixed;top:0;left:0;right:0;height:48px;background:#1b344d;color:#fff;display:flex;align-items:center;padding:0 16px;z-index:10}
+.sidebar{position:fixed;top:48px;bottom:0;left:0;width:180px;background:#243b55;color:#fff;overflow:auto}
+.sidebar ul{list-style:none;margin:0;padding:8px}
+.sidebar a{color:#cfd8dc;text-decoration:none;display:block;padding:6px 8px;border-radius:4px}
+.sidebar a.active,.sidebar a:hover{background:#35516e;color:#fff}
+main{margin-top:48px;margin-left:180px;padding:16px;flex:1;overflow:auto}
+.view{display:none}
+.view.active{display:block}
+.panel{background:#fff;border:1px solid #d5dde5;border-radius:6px;padding:12px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+#profiles-table{width:100%;border-collapse:collapse;font-size:14px}
+#profiles-table th,#profiles-table td{border:1px solid #d0d7de;padding:4px 6px;text-align:left}
+button{cursor:pointer;background:#1d6fd1;color:#fff;border:none;border-radius:4px;padding:6px 12px;font-size:14px}
+button:hover{background:#1558a5}
+label{display:block;margin-bottom:6px;font-size:14px}
+input{padding:4px 6px;font-size:14px;width:100%;box-sizing:border-box;margin-top:2px;margin-bottom:8px}
+#status-badges .badge{display:inline-block;background:#607d8b;color:#fff;padding:4px 8px;border-radius:12px;margin-left:6px;font-size:12px}
+.badge.state-STA_CONNECTED{background:#2e7d32}
+.badge.state-AP_ACTIVE{background:#ef6c00}
+.badge.state-STA_CONNECT{background:#1565c0}
+.badge.state-INIT{background:#546e7a}
+.toasts{position:fixed;bottom:12px;right:12px;display:flex;flex-direction:column;gap:8px;z-index:100}
+.toast{background:#323f4b;color:#fff;padding:8px 12px;border-radius:4px;box-shadow:0 2px 5px rgba(0,0,0,.25);animation:fadein .25s}
+.toast.error{background:#b00020}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}

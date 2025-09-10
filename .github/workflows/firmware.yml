@@ -1,0 +1,55 @@
+name: Firmware CI
+on:
+  push:
+    paths:
+      - 'main/**'
+      - 'components/**'
+      - 'CMakeLists.txt'
+      - 'sdkconfig.defaults'
+      - '.github/workflows/firmware.yml'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ESP-IDF deps
+        run: sudo apt-get update && sudo apt-get install -y git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache dfu-util libusb-1.0-0
+      - name: Set up ESP-IDF
+        run: |
+          git clone --depth 1 --branch v5.5 https://github.com/espressif/esp-idf.git $GITHUB_WORKSPACE/esp-idf
+          bash $GITHUB_WORKSPACE/esp-idf/install.sh esp32p4
+      - name: Build
+        env:
+          IDF_PATH: ${{ github.workspace }}/esp-idf
+        run: |
+          . $IDF_PATH/export.sh
+          idf.py set-target esp32p4
+          idf.py build
+      - name: Size Report
+        if: success()
+        run: |
+          . $GITHUB_WORKSPACE/esp-idf/export.sh
+          idf.py size
+      - name: Upload Firmware Artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: |
+            build/esp_brookesia_demo.bin
+            build/bootloader/bootloader.bin
+            build/partition_table/partition-table.bin
+            build/esp_brookesia_demo.elf
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Basic Formatting / Spell / Links
+        run: |
+          sudo apt-get update && sudo apt-get install -y doxygen graphviz
+          pip install codespell lychee-link-checker
+          codespell --ignore-words-list=te,nd --skip="*.bin,*.map,build" || true
+          lychee --no-progress --accept 200,429 . || true

@@ -1,0 +1,32 @@
+name: Docs Validation
+on:
+  push:
+    paths:
+      - '**.md'
+      - 'Doxyfile'
+      - 'tools/validate_docs.sh'
+      - '.github/workflows/docs.yml'
+      - 'main/**'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+          npm install -g markdownlint-cli
+          pip install codespell lychee-link-checker || sudo pip install codespell lychee-link-checker
+      - name: Validate Docs
+        run: |
+          bash tools/validate_docs.sh
+      - name: Upload API Docs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-docs
+          path: docs/api

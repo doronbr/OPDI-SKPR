@@ -1,0 +1,7 @@
+﻿{
+    "idf_path":  "C:\\Essence_SC\\ESP\\ESP-IDF_compiler\\v5.5",
+    "port":  "COM18",
+    "target":  "esp32p4",
+    "last_success_build":  null,
+    "idf_required_version":  "v5.5"
+}

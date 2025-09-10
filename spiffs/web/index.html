@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>OPDI_SKPR Network</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<h1>OPDI_SKPR Network</h1>
+<section id="status">
+  <h2>Status</h2>
+  <pre id="statusJson">(loading...)</pre>
+  <div id="metrics" class="metrics">
+    <h3>Metrics (live)</h3>
+    <ul id="metricsList">
+      <li>Attempts: <span id="mAttempts">0</span></li>
+      <li>Success: <span id="mSuccess">0</span></li>
+      <li>Avg Connect (ms): <span id="mAvg">0</span></li>
+      <li>Scans: <span id="mScans">0</span></li>
+      <li>Retries (current): <span id="mRetries">0</span></li>
+    </ul>
+  </div>
+  <div id="version" class="version">
+    <h3>Version</h3>
+    <pre id="versionJson">(loading...)</pre>
+  </div>
+</section>
+<section id="scan">
+  <h2>Scan</h2>
+  <button id="btnScan">Run Scan</button>
+  <button id="btnScanSummary">Scan Summary</button>
+  <table id="scanTable"><thead><tr><th>SSID</th><th>RSSI</th><th>Auth</th><th>Ch</th><th>BSSID</th><th>Connect</th></tr></thead><tbody></tbody></table>
+</section>
+<section id="profiles">
+  <h2>Saved Profiles</h2>
+  <table id="profilesTable"><thead><tr><th>ID</th><th>SSID (len)</th><th>Hidden</th><th>Success</th><th>Actions</th></tr></thead><tbody></tbody></table>
+  <h3>Add / Replace Profile</h3>
+  <form id="addProfileForm">
+    <label>SSID <input name="ssid" maxlength="32" required></label>
+    <label>PSK <input name="psk" maxlength="64"></label>
+    <label>Hidden <input type="checkbox" name="hidden"></label>
+    <button type="submit">Save</button>
+  </form>
+</section>
+<section id="events">
+  <h2>Events</h2>
+  <pre id="eventsLog" class="log"></pre>
+</section>
+<section id="camera">
+  <h2>Camera</h2>
+  <div class="cam-controls">
+    <button id="btnSnap">Snapshot</button>
+    <label>Auto-refresh <input type="checkbox" id="camAuto" /></label>
+    <label>Interval (s) <input type="number" id="camInterval" value="5" min="1" max="60"/></label>
+  </div>
+  <div class="cam-feed">
+    <img id="camImg" alt="snapshot" style="max-width:100%;border:1px solid #333;background:#000" />
+  </div>
+  <h3>Configuration</h3>
+  <form id="camCfgForm">
+    <label>Resolution
+      <select name="res">
+        <option value="QVGA">QVGA</option>
+        <option value="VGA">VGA</option>
+        <option value="SVGA">SVGA</option>
+        <option value="XGA">XGA</option>
+      </select>
+    </label>
+    <label>Quality (1-63) <input name="quality" type="number" min="1" max="63" value="10" /></label>
+    <label>Brightness (-2..2) <input name="brightness" type="number" min="-2" max="2" value="0" /></label>
+    <label>Contrast (-2..2) <input name="contrast" type="number" min="-2" max="2" value="0" /></label>
+    <button type="submit">Apply</button>
+  </form>
+  <pre id="camCfgStatus" class="log" style="max-height:120px"></pre>
+</section>
+<script src="app.js"></script>
+</body>
+</html>

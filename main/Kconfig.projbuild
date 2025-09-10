@@ -1,0 +1,166 @@
+menu "Project  Configurations"
+    config EXAMPLE_ENABLE_SD_CARD
+        bool "Enable SD Card"
+        default n
+        help 
+            Enabling this option will initialize the SD card, so the SD card needs to be inserted into the slot. Additionally, if using the Video Player example, an MJPEG format video must be saved on the SD card.
+
+    config EXAMPLE_ENABLE_DISPLAY
+        bool "Enable LCD Display & LVGL UI"
+        default n
+        help
+            Disable this if you are running the firmware without a display connected. The UI, LVGL tick/task handling, and backlight control will be skipped to avoid crashes or hangs when panel is absent.
+
+    config EXAMPLE_ENABLE_AUDIO_CODEC
+        bool "Enable Audio Codec (ES8311)"
+        default y
+        help
+            Disable this if the ES8311 codec (or associated I2C peripherals) is not connected. This skips codec initialization to prevent I2C bus errors and assertions.
+
+    config EXAMPLE_AUDIO_I2C_RETRY_COUNT
+        int "Audio codec I2C init retry count"
+        range 1 10
+        default 3
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            Number of times to retry ES8311 initialization if I2C transactions fail.
+
+    config EXAMPLE_AUDIO_I2C_SCAN_BEFORE_INIT
+        bool "Probe I2C address before codec init"
+        default y
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            Perform an address probe for the ES8311 before attempting initialization; if the probe fails, retries are performed without creating codec objects.
+    
+    config EXAMPLE_AUDIO_I2C_DEBUG_SCAN
+        bool "u"
+        default y
+        depends on EXAMPLE_AUDIO_I2C_SCAN_BEFORE_INIT
+        help
+            When enabled performs detailed logging for candidate addresses (0x18/0x19/default) and an additional scan
+            over 0x10-0x1F to diagnose I2C bus / address conflicts.
+
+    config EXAMPLE_FLASH_BAUD_921600
+        bool "Use 921600 baud for flashing"
+        default y
+        help
+            If enabled, suggests using 921600 baud for idf.py -b when flashing to speed up development cycles.
+
+    config EXAMPLE_AUDIO_CODEC_GRACEFUL_FAIL
+        bool "Do not assert on codec init failure"
+        default y
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            When enabled, the firmware logs an error if the codec cannot be initialized after retries, but continues running instead of asserting.
+
+    config EXAMPLE_HEADLESS_MODE
+        bool "Headless mode (no display/UI initialization)"
+        depends on !EXAMPLE_ENABLE_DISPLAY
+        default n
+        help
+            Enable this to completely skip LVGL / Brookesia Phone UI creation even if UI related code is present.
+            Use this when running on a fixture or minimal hardware with only audio or background services.
+            This option implicitly provides a dummy logical display size so code depending on stylesheet sizing
+            can still run logic paths that query display geometry.
+
+    # --- Startup audio configuration ---
+    config EXAMPLE_STARTUP_VOLUME
+        int "Startup volume (0-100%)"
+        range 0 100
+        default 40
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            Volume set immediately after the codec is initialized. 100 = maximum.
+
+    config EXAMPLE_STARTUP_FILE_PATH
+        string "Startup audio file path (SPIFFS)"
+        default "/spiffs/2048/weak.mp3"
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            Path to an audio file (e.g. MP3) stored in SPIFFS to play on startup. If the file is missing or playback fails,
+            and the beep option is enabled, a synthesized tone will be generated instead.
+
+    config EXAMPLE_STARTUP_BEEP_ENABLE
+        bool "Enable synthesized fallback beep"
+        default y
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            When enabled a short synthesized sine tone is played if the startup file cannot be played. Can be disabled to
+            suppress any audio on failure.
+
+    config EXAMPLE_STARTUP_BEEP_FREQ
+        int "Fallback beep frequency (Hz)"
+        range 100 4000
+        default 440
+        depends on EXAMPLE_STARTUP_BEEP_ENABLE
+        help
+            Frequency in Hertz of the synthesized sine beep used when the startup file is not played.
+
+    config EXAMPLE_STARTUP_BEEP_DURATION_MS
+        int "Fallback beep duration (ms)"
+        range 20 2000
+        default 120
+        depends on EXAMPLE_STARTUP_BEEP_ENABLE
+        help
+            Duration in milliseconds of the synthesized sine beep.
+
+    config EXAMPLE_AUDIO_ASYNC_STARTUP
+        bool "Run startup audio sequence in background task"
+        default y
+        depends on EXAMPLE_ENABLE_AUDIO_CODEC
+        help
+            When enabled, the startup audio file / beep sequence is executed in a separate FreeRTOS task so the main
+            application initialization can continue without blocking.
+
+    # --- Camera sensor orientation ---
+    config EXAMPLE_ENABLE_CAM_SENSOR_PIC_VFLIP
+        bool "Camera sensor vertical flip"
+        default n
+        help
+            Enable vertical flipping (mirror along horizontal axis) for the MIPI-CSI camera sensor output.
+
+    config EXAMPLE_ENABLE_CAM_SENSOR_PIC_HFLIP
+        bool "Camera sensor horizontal flip"
+        default n
+        help
+            Enable horizontal flipping (mirror along vertical axis) for the MIPI-CSI camera sensor output.
+
+    # --- MIPI CSI / SCCB configuration ---
+    config EXAMPLE_MIPI_CSI_SCCB_I2C_PORT
+        int "Camera SCCB I2C port"
+        range 0 1
+        default 0
+        help
+            I2C controller port used for the camera SCCB (sensor register) bus.
+
+    config EXAMPLE_MIPI_CSI_SCCB_I2C_SCL_PIN
+        int "Camera SCCB SCL GPIO"
+        default 8
+        help
+            GPIO number for the camera SCCB clock (SCL) line.
+
+    config EXAMPLE_MIPI_CSI_SCCB_I2C_SDA_PIN
+        int "Camera SCCB SDA GPIO"
+        default 7
+        help
+            GPIO number for the camera SCCB data (SDA) line.
+
+    config EXAMPLE_MIPI_CSI_SCCB_I2C_FREQ
+        int "Camera SCCB I2C frequency (Hz)"
+        range 10000 400000
+        default 100000
+        help
+            Operating clock for the camera SCCB bus.
+
+    config EXAMPLE_MIPI_CSI_CAM_SENSOR_RESET_PIN
+        int "Camera sensor RESET GPIO (-1 unused)"
+        default -1
+        help
+            Optional dedicated reset GPIO for the camera sensor. -1 disables usage.
+
+    config EXAMPLE_MIPI_CSI_CAM_SENSOR_PWDN_PIN
+        int "Camera sensor PWDN GPIO (-1 unused)"
+        default -1
+        help
+            Optional power-down control GPIO for the camera sensor. -1 disables usage.
+endmenu

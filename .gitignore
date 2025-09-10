@@ -1,0 +1,45 @@
+﻿# ESP-IDF / Build artifacts
+/build/
+/dist/
+/sdkconfig.old
+/sdkconfig
+/sdkconfig.*.bak
+*.bin
+*.elf
+*.map
+*.log
+*.pyc
+__pycache__/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+*.ninja
+*.swp
+*.swo
+# (Allow committing VS Code workspace settings for reproducible environment)
+# /.vscode/  <-- removed from ignore
+/.idea/
+*.code-workspace
+
+# Partition / SPIFFS images
+/storage.bin
+/spiffs_image*
+
+# Python virtual envs
+.env/
+.venv/
+venv/
+
+# Generated model packs
+components/human_face_detect/models/*.espdl
+components/pedestrian_detect/models/*.espdl
+
+# IDF component manager downloads
+managed_components/*/.component_hash
+managed_components/*/dist/
+
+# Local tools scripts output
+/tools/*.tmp
+
+# Crash dumps
+*.core
