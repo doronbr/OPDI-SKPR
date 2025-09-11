@@ -3,6 +3,9 @@
  *
  * SPDX-License-Identifier: ESPRESSIF MIT
  */
+/*
+ * OPDI-SKPR note (2025-09-11): No functional change. Touched to record local CSI device driver sync.
+ */
 
 #include <stdlib.h>
 #include <string.h>
