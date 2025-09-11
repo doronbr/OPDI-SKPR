@@ -1,0 +1,76 @@
+menu "OPDI Camera"
+
+config OPDI_CAM_DEFAULT_PROFILE
+    string "Default camera profile"
+    default "480p"
+    help
+        Select default profile (720p|480p|240p) used at first boot before
+        any persisted configuration exists.
+
+config OPDI_CAM_DEFAULT_FPS
+    int "Default FPS"
+    default 15
+    range 10 30
+    help
+        Target frames per second for initial configuration.
+
+config OPDI_CAM_DEFAULT_JPEG_Q
+    int "Default JPEG quality"
+    default 70
+    range 50 90
+    help
+        Baseline JPEG quality; adaptive governor may adjust within range.
+
+config OPDI_CAM_STREAM_DEPTH
+    int "Stream ring depth"
+    default 3
+    range 2 4
+    help
+        Number of compressed frames retained for MJPEG streaming clients.
+
+config OPDI_CAM_PIPE_DEPTH
+    int "Pipeline queue depth"
+    default 2
+    range 1 3
+    help
+        Number of frames available for detector; newest overwrites oldest if busy.
+
+config OPDI_CAM_GOVERNOR
+    bool "Enable camera adaptive governor"
+    default y
+    help
+        Enables logic to adapt profile and JPEG quality under system load.
+
+config OPDI_IR_GPIO
+    int "IR LED GPIO (active-low)"
+    default 20
+    help
+        GPIO controlling IR illumination transistor (drive low to enable).
+
+config OPDI_IR_DEFAULT_MODE
+    string "Default IR mode"
+    default "auto"
+    help
+        IR operational mode at first boot (auto|on|off).
+
+config OPDI_IR_Y_LOW
+    int "IR luminance low threshold"
+    default 40
+    range 0 255
+
+config OPDI_IR_Y_HIGH
+    int "IR luminance high threshold"
+    default 60
+    range 0 255
+
+config OPDI_IR_HYST_ON_MS
+    int "IR hysteresis ON ms"
+    default 3000
+    range 0 60000
+
+config OPDI_IR_HYST_OFF_MS
+    int "IR hysteresis OFF ms"
+    default 3000
+    range 0 60000
+
+endmenu
